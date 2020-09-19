@@ -52,4 +52,8 @@ body {
       rgba(255, 255, 255, 0.1)
     );
 }
+
+* {
+  box-sizing: border-box;
+}
 </style>
