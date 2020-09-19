@@ -23,6 +23,7 @@ export default {
   },
   mounted() {
     this.addBorder();
+    this.addData()
   },
   methods: {
     addBorder() {
@@ -40,6 +41,12 @@ export default {
 
       console.log(masked);
     },
+    addData () {
+      const map = this.$map;
+      fetch('./data/富力.geojson').then(resp => resp.json()).then(geojson => {
+        L.geoJSON(geojson).addTo(map)
+      })
+    }
   },
 };
 </script>
