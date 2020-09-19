@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 import MapView from "./components/MapView.vue";
 
 export default {
@@ -13,9 +13,9 @@ export default {
   components: {
     MapView,
   },
-  created () {
-    Vue.prototype.$app = new Vue()
-  }
+  created() {
+    Vue.prototype.$app = new Vue();
+  },
 };
 </script>
 
@@ -23,6 +23,10 @@ export default {
 $theme-black: #061537;
 $theme-grid-white: #a39d9d;
 $theme-color: rgba(0, 0, 0, 0.1);
+
+:root {
+  font-size: 14px;
+}
 
 html,
 body {

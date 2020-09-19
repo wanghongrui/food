@@ -1,5 +1,9 @@
 <template>
   <div class="map-view">
+    <div class="header-container">
+      <v-header />
+    </div>
+
     <div class="base-map-container">
       <base-map />
     </div>
@@ -7,12 +11,14 @@
 </template>
 
 <script>
+import VHeader from "@/components/common/Header";
 import BaseMap from "@/components/common/BaseMap";
 import border from "@/assets/region";
 import mask from "@turf/mask";
 
 export default {
   components: {
+    VHeader,
     BaseMap,
   },
   mounted() {
@@ -44,10 +50,20 @@ export default {
   width: 100%;
   height: 100%;
 
+  .header-container {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+
   .base-map-container {
     position: relative;
     width: 100%;
     height: 100%;
+    z-index: 0;
   }
 }
 </style>
