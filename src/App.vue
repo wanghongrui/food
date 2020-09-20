@@ -33,6 +33,7 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+  color: white;
 
   background-color: transparentize($theme-black, 0.1);
   background-position: center;

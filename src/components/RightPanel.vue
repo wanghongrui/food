@@ -1,17 +1,23 @@
 <template>
   <div class="right-panel">
-    <div class="list-box box">
-      <List />
+    <div class="search-box box">
+      <Search />
     </div>
   </div>
 </template>
 
 <script>
-import List from "@/components/common/List";
+import Search from "@/components/common/Search";
 
 export default {
   components: {
-    List,
+    Search,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.right-panel {
+  position: relative;
+}
+</style>

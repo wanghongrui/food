@@ -61,6 +61,8 @@ export default {
         .then((resp) => resp.json())
         .then((geojson) => {
           L.geoJSON(geojson).addTo(map);
+
+          this.$store.commit("items_changed", geojson.features);
         });
     },
   },
@@ -107,7 +109,6 @@ export default {
     max-width: 30%;
     height: 100%;
     z-index: 1;
-
     box-shadow: inset 0px 0px 6px 2px #09c;
   }
 
@@ -117,7 +118,6 @@ export default {
     max-width: 30%;
     height: 100%;
     z-index: 1;
-
     box-shadow: inset 0px 0px 6px 2px #09c;
   }
 }
