@@ -32,9 +32,18 @@ export default {
 .right-panel {
   position: relative;
   padding: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   .box + .box {
     margin-top: 10px;
+  }
+
+  .list-box {
+    flex: 1;
+    overflow: hidden;
   }
 }
 </style>

@@ -23,6 +23,9 @@ export default {
     keyword() {
       this.getItems();
     },
+    items() {
+      this.$store.commit("result_changed", this.items);
+    },
   },
   methods: {
     getItems() {

@@ -115,6 +115,7 @@ export default {
     flex: 1;
     display: flex;
     padding-top: 10px;
+    overflow: hidden;
   }
 
   .base-map-container {

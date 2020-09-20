@@ -1,12 +1,14 @@
 <template>
   <div class="list">
     <div class="list-body">
-      <div class="list-item" @click="select(item)" v-for="item of result" :key="item.id">
-        <div class="list-item-icon">
-          <icon name="location" scale="2"></icon>
+      <vue-scroll>
+        <div class="list-item" @click="select(item)" v-for="item of result" :key="item.id">
+          <div class="list-item-icon">
+            <icon name="location" scale="2"></icon>
+          </div>
+          <div class="list-item-text">{{item.properties.name}}</div>
         </div>
-        <div class="list-item-text">{{item.properties.name}}</div>
-      </div>
+      </vue-scroll>
     </div>
     <div class="list-footer">共计 {{result.length}} 条</div>
   </div>
@@ -30,8 +32,15 @@ export default {
 <style lang="scss" scoped>
 .list {
   position: relative;
-  padding: 10px 0;
+  height: 100%;
   background-color: rgba(6, 21, 55, 0.6);
+  display: flex;
+  flex-direction: column;
+
+  &-body {
+    flex: 1;
+    overflow: auto;
+  }
 
   &-item {
     padding: 6px 0;
