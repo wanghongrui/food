@@ -27,6 +27,9 @@ import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import border from "@/assets/region";
 import mask from "@turf/mask";
+import bbox from "@turf/bbox";
+
+let map = null;
 
 export default {
   components: {
@@ -35,13 +38,23 @@ export default {
     LeftPanel,
     RightPanel,
   },
+  computed: {
+    item() {
+      return this.$store.state.item;
+    },
+  },
   mounted() {
+    map = this.$map;
     this.addBorder();
     this.addData();
   },
+  watch: {
+    item() {
+      this.location();
+    },
+  },
   methods: {
     addBorder() {
-      const map = this.$map;
       const masked = mask(border);
 
       L.geoJSON(masked, {
@@ -56,7 +69,6 @@ export default {
       console.log(masked);
     },
     addData() {
-      const map = this.$map;
       fetch("./data/富力.geojson")
         .then((resp) => resp.json())
         .then((geojson) => {
@@ -64,6 +76,16 @@ export default {
 
           this.$store.commit("items_changed", geojson.features);
         });
+    },
+    location() {
+      const [x0, y0, x1, y1] = bbox(this.item);
+      map.fitBounds(
+        [
+          [y0, x0],
+          [y1, x1],
+        ],
+        { maxZoom: 17 }
+      );
     },
   },
 };

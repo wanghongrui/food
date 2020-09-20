@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input class="search-input" type="text" v-model="keyword" />
+    <input class="search-input" type="text" v-model="keyword" placeholder="搜索" />
     <span class="map-tool-icon">
       <icon name="search" scale="2"></icon>
     </span>

@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div class="list-body">
-      <div class="list-item" v-for="item of result" :key="item.id">
+      <div class="list-item" @click="select(item)" v-for="item of result" :key="item.id">
         <div class="list-item-icon">
           <icon name="location" scale="2"></icon>
         </div>
@@ -17,6 +17,11 @@ export default {
   computed: {
     result() {
       return this.$store.state.result;
+    },
+  },
+  methods: {
+    select(item) {
+      this.$store.commit("item_changed", item);
     },
   },
 };
