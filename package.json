@@ -10,6 +10,7 @@
     "@turf/length": "^6.0.2",
     "@turf/mask": "^5.1.5",
     "core-js": "^3.6.5",
+    "echarts": "^4.9.0",
     "leaflet": "^1.7.1",
     "vue": "^2.6.11",
     "vue-svg-icon": "^1.2.9",

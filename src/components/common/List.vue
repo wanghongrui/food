@@ -25,11 +25,11 @@ export default {
 <style lang="scss" scoped>
 .list {
   position: relative;
-  padding: 10px;
+  padding: 10px 0;
+  background-color: rgba(6, 21, 55, 0.6);
 
   &-item {
     padding: 6px 0;
-    background-color: rgba(6, 21, 55, 0.6);
     display: flex;
     cursor: pointer;
     font-size: 1.1rem;

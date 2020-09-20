@@ -1,17 +1,41 @@
 <template>
   <div class="left-panel">
-    <div class="list-box box">
-      <List />
+    <div class="region-box box">
+      <Region />
+    </div>
+    <div class="region-box box">
+      <Region />
+    </div>
+    <div class="region-box box">
+      <Region />
     </div>
   </div>
 </template>
 
 <script>
-import List from "@/components/common/List";
+import Region from "@/components/chart/Region";
 
 export default {
   components: {
-    List,
+    Region,
   },
 };
 </script>
+
+<style lang="scss">
+.left-panel {
+  position: relative;
+  height: 100%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+
+  .box {
+    flex: 1;
+  }
+
+  .chart {
+    height: 100%;
+  }
+}
+</style>
