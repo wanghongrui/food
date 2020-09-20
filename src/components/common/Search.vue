@@ -39,7 +39,7 @@ export default {
 <style lang="scss" scoped>
 .search {
   display: flex;
-  padding: 12px;
+  padding: 6px 0;
 
   &-input {
     flex: 1;
