@@ -31,24 +31,24 @@ export default {
               id: "img",
               type: "xyz",
               url:
-                "http://t1.tianditu.gov.cn/img_c/wmts?tk=a2f6f87af74c3f92d4cc08a5f6f109c7&layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}",
+                "http://srv{s}.zjditu.cn/ZJDOM_2D/wmts?layer=imgmap&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
-              }
+              },
             },
             {
               id: "img-anno",
               type: "xyz",
               url:
-                "http://t3.tianditu.gov.cn/cia_c/wmts?tk=a2f6f87af74c3f92d4cc08a5f6f109c7&layer=cia&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}",
+                "http://srv{s}.zjditu.cn/ZJDOMANNO_2D/wmts?layer=TDT_ZJIMGANNO&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         {
           label: "地图",
@@ -57,40 +57,40 @@ export default {
               id: "emap",
               type: "xyz",
               url:
-                "http://t0.tianditu.gov.cn/vec_c/wmts?tk=a2f6f87af74c3f92d4cc08a5f6f109c7&layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}",
+                "http://srv{s}.zjditu.cn/ZJEMAP_2D/wmts?layer=TDT_ZJEMAP&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
-              }
+              },
             },
             {
               id: "emap-anno",
               type: "xyz",
               url:
-                "http://t3.tianditu.gov.cn/cva_c/wmts?tk=a2f6f87af74c3f92d4cc08a5f6f109c7&layer=cva&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}",
+                "http://srv{s}.zjditu.cn/ZJEMAPANNO_2D/wmts?layer=TDT_ZJEMAPANNO&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ],
-      activeMapType: null
+      activeMapType: null,
     };
   },
   watch: {
     activeMapType(n, o) {
       o &&
-        o.values.forEach(l => {
+        o.values.forEach((l) => {
           this.$app.$emit("remove-layer", l.id);
         });
 
-      n.values.forEach(l => {
+      n.values.forEach((l) => {
         this.$app.$emit("add-layer", l);
       });
-    }
+    },
   },
   mounted() {
     this.activeMapType = this.mapTypes[0];
@@ -106,17 +106,17 @@ export default {
       const map = this.$map;
 
       if (this.drawing) {
-        return
+        return;
       }
 
       const layer = L.polyline([], {
-        interactive: false
+        interactive: false,
       }).addTo(map);
 
       this.layer = layer;
 
       const tempLayer = L.polyline([], {
-        interactive: false
+        interactive: false,
       }).addTo(map);
       let tempPoints = [];
 
@@ -128,10 +128,10 @@ export default {
 
       const popup = L.popup({
         autoClose: false,
-        closeButton: false
+        closeButton: false,
       });
 
-      const setTipText = content => {
+      const setTipText = (content) => {
         const el = document.createElement("div");
         el.className = "measure-marker";
 
@@ -152,11 +152,11 @@ export default {
         return el;
       };
 
-      const clickHandler = e => {
+      const clickHandler = (e) => {
         layer.addLatLng(e.latlng);
         tempPoints[0] = e.latlng;
-        this.drawing = true
-        map.doubleClickZoom.disable()
+        this.drawing = true;
+        map.doubleClickZoom.disable();
 
         const len = length(layer.toGeoJSON(), { units: "kilometers" });
 
@@ -166,18 +166,18 @@ export default {
           .openOn(map);
       };
 
-      const mousemoveHandler = e => {
+      const mousemoveHandler = (e) => {
         if (tempPoints.length) {
           tempPoints[1] = e.latlng;
           tempLayer.setLatLngs(tempPoints);
         }
       };
 
-      const dblclickHandler = e => {
+      const dblclickHandler = (e) => {
         tempPoints = null;
         tempLayer.remove();
-        this.drawing = false
-        map.doubleClickZoom.enable()
+        this.drawing = false;
+        map.doubleClickZoom.enable();
 
         map.off("click", clickHandler);
         map.off("mousemove", mousemoveHandler);
@@ -187,8 +187,8 @@ export default {
       map.on("click", clickHandler);
       map.on("mousemove", mousemoveHandler);
       map.on("dblclick", dblclickHandler);
-    }
-  }
+    },
+  },
 };
 </script>
 
