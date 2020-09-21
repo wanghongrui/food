@@ -1,33 +1,35 @@
 <template>
   <div class="left-panel">
-    <div class="region-box box">
-      <Region />
+    <div class="region-box box" v-if="region === '全部'">
+      <ChartRegion />
     </div>
-    <div class="region-box box">
-      <Region />
-    </div>
-    <div class="region-box box" v-if="!item">
-      <Region />
+    <div class="streets-box box" v-if="region !== '全部'">
+      <ChartStreets />
     </div>
 
-    <div class="detail-box box" v-if="item">
+    <div class="detail-box box">
       <Detail />
     </div>
   </div>
 </template>
 
 <script>
-import Region from "@/components/chart/Region";
+import ChartRegion from "@/components/chart/Region";
+import ChartStreets from "@/components/chart/Streets";
 import Detail from "@/components/common/Detail";
 
 export default {
   components: {
-    Region,
+    ChartRegion,
+    ChartStreets,
     Detail,
   },
   computed: {
     item() {
       return this.$store.state.item;
+    },
+    region() {
+      return this.$store.state.region;
     },
   },
 };
@@ -41,8 +43,12 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .box {
-    flex: 1;
+  .region-box {
+    flex: 2;
+  }
+
+  .streets-box {
+    flex: 3;
   }
 
   .chart {

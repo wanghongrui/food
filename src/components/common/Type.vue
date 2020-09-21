@@ -4,17 +4,44 @@
       <div class="type-item-icon">
         <icon name="food-heavy" scale="4"></icon>
       </div>
-      <span class="type-item-text">重餐饮(648家)</span>
+      <span class="type-item-text">重餐饮({{heavyCount }}家)</span>
     </div>
 
     <div class="type-item">
       <div class="type-item-icon">
         <icon name="food-light" scale="4"></icon>
       </div>
-      <span class="type-item-text">轻餐饮(1024家)</span>
+      <span class="type-item-text">轻餐饮({{lightCount}}家)</span>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    region() {
+      return this.$store.state.region;
+    },
+  },
+  data() {
+    return {
+      heavyCount: 243,
+      lightCount: 512,
+    };
+  },
+  watch: {
+    region() {
+      this.setData();
+    },
+  },
+  methods: {
+    setData() {
+      this.heavyCount = 300 + Math.round(Math.random() * 200);
+      this.lightCount = 500 + Math.round(Math.random() * 200);
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .type {
