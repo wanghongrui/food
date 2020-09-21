@@ -9,7 +9,7 @@ export default new Vuex.Store({
     items: [],
     result: [],
     item: null,
-    region: null
+    region: "全部"
   },
   mutations: {
     map_loaded(state) {
@@ -25,7 +25,7 @@ export default new Vuex.Store({
     item_changed(state, item) {
       state.item = item
     },
-    region_changed (state, region) {
+    region_changed (state, region = "全部") {
       state.region = region
     }
   }

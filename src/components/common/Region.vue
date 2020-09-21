@@ -1,19 +1,30 @@
 <template>
   <div class="regions">
-    <span class="region" @click="select">全部</span>
-    <span class="region">上城</span>
-    <span class="region">下城</span>
-    <span class="region">江干</span>
-    <span class="region">西湖</span>
-    <span class="region">拱墅</span>
+    <span
+      class="region"
+      :class="{active: item === region}"
+      @click="select(item)"
+      v-for="(item, index) of items"
+      :key="index"
+    >{{item}}</span>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      items: ["全部", "上城", "下城", "江干", "西湖", "拱墅"],
+    };
+  },
+  computed: {
+    region() {
+      return this.$store.state.region;
+    },
+  },
   methods: {
-    select(region) {
-      this.$store.commit("region_changed", region);
+    select(item) {
+      this.$store.commit("region_changed", item);
     },
   },
 };
@@ -25,6 +36,17 @@ export default {
 
   .region {
     flex: 1;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &.active {
+      background-color: #09c;
+      color: white;
+    }
   }
 }
 </style>
