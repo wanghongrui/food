@@ -8,7 +8,8 @@ export default new Vuex.Store({
     mapLoaded: false,
     items: [],
     result: [],
-    item: null
+    item: null,
+    region: null
   },
   mutations: {
     map_loaded(state) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     item_changed(state, item) {
       state.item = item
+    },
+    region_changed (state, region) {
+      state.region = region
     }
   }
 })

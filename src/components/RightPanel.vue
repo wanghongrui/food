@@ -1,5 +1,9 @@
 <template>
   <div class="right-panel">
+    <div class="regions-box box">
+      <Region />
+    </div>
+
     <div class="search-box box">
       <Search />
     </div>
@@ -18,12 +22,14 @@
 import Search from "@/components/common/Search";
 import Type from "@/components/common/Type";
 import List from "@/components/common/List";
+import Region from "@/components/common/Region"
 
 export default {
   components: {
     Search,
     Type,
     List,
+    Region
   },
 };
 </script>
