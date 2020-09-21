@@ -104,11 +104,10 @@ export default {
   .header-container {
     position: relative;
     width: 100%;
-    height: 60px;
+    height: 40px;
     left: 0;
     top: 0;
     z-index: 1;
-    box-shadow: inset 0px 0px 6px 2px #09c;
   }
 
   .body-container {
