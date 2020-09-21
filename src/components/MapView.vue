@@ -42,22 +42,35 @@ export default {
     item() {
       return this.$store.state.item;
     },
+    region() {
+      return this.$store.state.region;
+    },
   },
   mounted() {
     map = this.$map;
-    this.addBorder();
+    this.setBorder();
     this.addData();
   },
   watch: {
     item() {
       this.location();
     },
+    region() {
+      this.setBorder();
+    },
   },
   methods: {
-    addBorder() {
-      const masked = mask(border);
+    setBorder() {
+      this.border && this.border.remove();
 
-      L.geoJSON(masked, {
+      let target = border;
+
+      if (this.region !== "全部") {
+        target = border.features.find((f) => f.properties.name === this.region);
+      }
+      const masked = mask(target);
+
+      this.border = L.geoJSON(masked, {
         style: {
           color: "rgb(26, 47, 101, 0.8)",
           weight: 5,
@@ -66,7 +79,7 @@ export default {
         },
       }).addTo(map);
 
-      console.log(masked);
+      this.fitBounds(target);
     },
     addData() {
       fetch("./data/富力.geojson")
@@ -78,7 +91,10 @@ export default {
         });
     },
     location() {
-      const [x0, y0, x1, y1] = bbox(this.item);
+      this.fitBounds(this.item);
+    },
+    fitBounds(feature) {
+      const [x0, y0, x1, y1] = bbox(feature);
       map.fitBounds(
         [
           [y0, x0],
