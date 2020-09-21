@@ -7,6 +7,10 @@
       </span>
     </div>
     <div class="detail-content">
+      <div class="detail-item">
+        <span class="detail-item-label">店名</span>
+        <span class="detail-item-value">{{item && item.properties.name || '知味观'}}</span>
+      </div>
       <div class="detail-item" v-for="(field, index) of fields" :key="index">
         <span class="detail-item-label">{{field.label}}</span>
         <span class="detail-item-value">{{field.value}}</span>
@@ -28,10 +32,6 @@ export default {
         {
           label: "路名",
           value: "教工路",
-        },
-        {
-          label: "店名",
-          value: "牛肉火锅",
         },
         {
           label: "年份",

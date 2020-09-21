@@ -44,11 +44,11 @@ export default {
   flex-direction: column;
 
   .region-box {
-    flex: 2;
+    flex: 1;
   }
 
   .streets-box {
-    flex: 3;
+    flex: 1;
   }
 
   .chart {

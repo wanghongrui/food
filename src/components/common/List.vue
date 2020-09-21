@@ -2,7 +2,7 @@
   <div class="list">
     <div class="list-body">
       <vue-scroll>
-        <div class="list-item" @click="select(item)" v-for="item of result" :key="item.id">
+        <div class="list-item" :class="{active: item === itemSelected}" @click="select(item)" v-for="item of result" :key="item.id">
           <div class="list-item-icon">
             <icon name="location" scale="2"></icon>
           </div>
@@ -20,6 +20,9 @@ export default {
     result() {
       return this.$store.state.result;
     },
+    itemSelected () {
+      return this.$store.state.item
+    }
   },
   methods: {
     select(item) {
@@ -50,6 +53,11 @@ export default {
 
     &-icon {
       margin: 0 6px;
+    }
+
+    &.active {
+      background-color: rgba(6, 21, 55, 0.9);
+      border: solid 1px gray;
     }
 
     &:hover {
