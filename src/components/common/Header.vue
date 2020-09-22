@@ -4,7 +4,7 @@
       <icon name="xiegang" scale="4" />
     </span>
     <h1 class="header-title">
-      <span class="header-title-text">重污染餐饮业分布电子地图</span>
+      <span class="header-title-text">杭州市五区餐饮限定区域电子地图</span>
     </h1>
     <span class="header-title-icon icon">
       <icon name="xiegang" scale="4" />

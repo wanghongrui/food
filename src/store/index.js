@@ -19,7 +19,6 @@ export default new Vuex.Store({
       state.items = items
     },
     result_changed(state, items = []) {
-      console.log(items)
       state.result = items
     },
     item_changed(state, item) {
