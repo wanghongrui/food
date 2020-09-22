@@ -28,8 +28,12 @@ import RightPanel from "@/components/RightPanel";
 import border from "@/assets/region";
 import mask from "@turf/mask";
 import bbox from "@turf/bbox";
+import center from "@turf/center";
+import L from "leaflet";
+import echarts from "echarts";
 
 let map = null;
+let chartMarkers = []
 
 export default {
   components: {
@@ -46,10 +50,20 @@ export default {
       return this.$store.state.region;
     },
   },
+  data() {
+    return {
+      mapChartVisible: false,
+    };
+  },
   mounted() {
     map = this.$map;
     this.setBorder();
     this.addData();
+
+    map.on("zoomend", () => {
+      const level = map.getZoom();
+      this.mapChartVisible = level >= 10  && level < 15;
+    });
   },
   watch: {
     item() {
@@ -57,6 +71,9 @@ export default {
     },
     region() {
       this.setBorder();
+    },
+    mapChartVisible(visible) {
+      visible ? this.addMapChart() : this.removeMapChart();
     },
   },
   methods: {
@@ -102,6 +119,67 @@ export default {
         ],
         { maxZoom: 17 }
       );
+    },
+    createMapChart(feature) {
+      const {
+        geometry: { coordinates },
+      } = center(feature);
+
+      const el = document.createElement("div");
+      el.className = "leaflet-chart-container";
+      el.style.width = "81px";
+      el.style.height = "81px";
+
+      const icon = L.divIcon({
+        html: el,
+        iconSize: [81, 81],
+      });
+      const marker = L.marker(coordinates.reverse(), {
+        icon,
+      }).addTo(map);
+      chartMarkers.push(marker)
+
+      const option = {
+        color: ["#00868B", "#00FFFF"],
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
+        series: [
+          {
+            name: "餐饮",
+            type: "pie",
+            radius: "55%",
+            center: ["50%", "60%"],
+            labelLine: {
+              show: false,
+            },
+            data: [
+              { value: Math.round(Math.random() * 300) + 200, name: "重餐饮" },
+              { value: Math.round(Math.random() * 300) + 100, name: "轻餐饮" },
+            ],
+          },
+        ],
+      };
+
+      const chart = echarts.init(el);
+      chart.setOption(option);
+    },
+    addMapChart() {
+      if (this.region === "全部") {
+        border.features.forEach((feature) => {
+          this.createMapChart(feature);
+        });
+      } else {
+        const target = border.features.find(
+          (f) => f.properties.name === this.region
+        );
+        this.createMapChart(target);
+      }
+    },
+    removeMapChart() {
+      chartMarkers.forEach(m => m.remove())
+      chartMarkers.length = 0
     },
   },
 };

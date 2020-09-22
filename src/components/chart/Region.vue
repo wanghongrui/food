@@ -12,7 +12,7 @@ export default {
   methods: {
     render() {
       const option = {
-        color: ["#00868B", "#00FFFF", "#4cabce", "#e5323e"],
+        color: ["#00868B", "#00FFFF"],
         grid: {
           left: 50,
           top: 30,

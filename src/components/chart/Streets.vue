@@ -14,15 +14,10 @@ export default {
   mounted() {
     this.render();
   },
-  watch: {
-    region () {
-      this.setData()
-    }
-  },
   methods: {
     render() {
       const option = {
-        color: ["#00868B", "#00FFFF", "#4cabce", "#e5323e"],
+        color: ["#00868B", "#00FFFF"],
         grid: {
           left: 70,
           top: 30,
