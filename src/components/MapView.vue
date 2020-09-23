@@ -31,6 +31,7 @@ import bbox from "@turf/bbox";
 import center from "@turf/center";
 import L from "leaflet";
 import echarts from "echarts";
+import loader from 'load-script-promise';
 
 let map = null;
 let chartMarkers = []
@@ -46,6 +47,9 @@ export default {
     item() {
       return this.$store.state.item;
     },
+    items () {
+      return this.$store.state.items;
+    },
     region() {
       return this.$store.state.region;
     },
@@ -57,26 +61,39 @@ export default {
   },
   mounted() {
     map = this.$map;
-    this.setBorder();
-    this.addData();
 
     map.on("zoomend", () => {
       const level = map.getZoom();
       this.mapChartVisible = level >= 10  && level < 15;
     });
+
+    loader.loadScript('./data/data.js').then(() => {
+      this.$store.commit('region_changed', '全部')
+    })
   },
   watch: {
     item() {
       this.location();
     },
+    items () {
+      this.addItemsLayer()
+    },
     region() {
-      this.setBorder();
+      this.setItems()
+      this.setBorder()
     },
     mapChartVisible(visible) {
       visible ? this.addMapChart() : this.removeMapChart();
     },
   },
   methods: {
+    setItems () {
+      let features = window.data.features
+      if (this.region !== "全部") {
+        features = features.filter(feature => feature.properties.OBJECTID % 4 === 0)
+      }
+      this.$store.commit('items_changed', features)
+    },
     setBorder() {
       this.border && this.border.remove();
 
@@ -164,6 +181,15 @@ export default {
 
       const chart = echarts.init(el);
       chart.setOption(option);
+    },
+    addItemsLayer () {
+      this.itemsLayer && this.itemsLayer.remove()
+
+      this.itemsLayer = L.geoJSON(this.items, {
+        filter: () => {
+          return map.getZoom() > 10
+        }
+      }).addTo(map)
     },
     addMapChart() {
       if (this.region === "全部") {

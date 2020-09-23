@@ -9,7 +9,7 @@ export default new Vuex.Store({
     items: [],
     result: [],
     item: null,
-    region: "全部"
+    region: ""
   },
   mutations: {
     map_loaded(state) {
