@@ -81,6 +81,9 @@ export default {
   },
   watch: {
     item() {
+      if (this.items) {
+        this.twinkle();
+      }
       this.location();
     },
     items() {
@@ -212,6 +215,27 @@ export default {
       chartMarkers.forEach((m) => m.remove());
       chartMarkers.length = 0;
     },
+    twinkle () {
+      const b = bbox(this.item);
+      const bounds = [
+        [b[1], b[0]],
+        [b[3], b[2]]
+      ];
+      map.fitBounds(bounds, {
+        maxZoom: 17
+      });
+
+      this.itemsLayer.eachLayer(f => {
+        if (f.feature === this.item) {
+          const element = f.getElement();
+          element.classList.add("animate");
+
+          setTimeout(() => {
+            element.classList.remove("animate");
+          }, 5000);
+        }
+      });
+    }
   },
 };
 </script>
@@ -264,6 +288,10 @@ export default {
     height: 100%;
     z-index: 1;
     box-shadow: inset 0px 0px 6px 2px #09c;
+  }
+
+  ::v-deep .animate {
+    animation: twinkle 1s 5;
   }
 }
 </style>
