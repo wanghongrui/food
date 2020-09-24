@@ -65,11 +65,19 @@ export default {
     map.on("zoomend", () => {
       const level = map.getZoom();
       this.mapChartVisible = level >= 10  && level < 15;
+
+      if (level < 15) {
+        this.itemsLayer.remove()
+      } else {
+        this.itemsLayer.addTo(map)
+      }
     });
 
     loader.loadScript('./data/data.js').then(() => {
       this.$store.commit('region_changed', '全部')
     })
+
+    this.itemsLayer = L.geoJSON([])
   },
   watch: {
     item() {
@@ -183,13 +191,8 @@ export default {
       chart.setOption(option);
     },
     addItemsLayer () {
-      this.itemsLayer && this.itemsLayer.remove()
-
-      this.itemsLayer = L.geoJSON(this.items, {
-        filter: () => {
-          return map.getZoom() > 10
-        }
-      }).addTo(map)
+      const level = map.getZoom()
+      this.itemsLayer.addData(this.items)
     },
     addMapChart() {
       if (this.region === "全部") {

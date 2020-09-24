@@ -18,7 +18,7 @@
 export default {
   computed: {
     result() {
-      return this.$store.state.result;
+      return this.$store.state.result.slice(0, 40);
     },
     itemSelected () {
       return this.$store.state.item
