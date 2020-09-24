@@ -2,15 +2,21 @@
   <div class="list">
     <div class="list-body">
       <vue-scroll>
-        <div class="list-item" :class="{active: item === itemSelected}" @click="select(item)" v-for="item of result" :key="item.id">
+        <div
+          class="list-item"
+          :class="{ active: item === itemSelected }"
+          @click="select(item)"
+          v-for="item of result"
+          :key="item.id"
+        >
           <div class="list-item-icon">
             <icon name="location" scale="2"></icon>
           </div>
-          <div class="list-item-text">{{item.properties.name}}</div>
+          <div class="list-item-text">{{ item.properties.name }}</div>
         </div>
       </vue-scroll>
     </div>
-    <div class="list-footer">共计 {{result.length}} 条</div>
+    <div class="list-footer">共计 {{ result.length }} 条</div>
   </div>
 </template>
 
@@ -20,9 +26,9 @@ export default {
     result() {
       return this.$store.state.result.slice(0, 40);
     },
-    itemSelected () {
-      return this.$store.state.item
-    }
+    itemSelected() {
+      return this.$store.state.item;
+    },
   },
   methods: {
     select(item) {

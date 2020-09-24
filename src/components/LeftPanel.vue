@@ -1,27 +1,22 @@
 <template>
   <div class="left-panel">
-    <div class="region-box box" v-if="region === '全部'">
-      <ChartRegion />
-    </div>
-    <div class="streets-box box" v-if="region !== '全部'">
-      <ChartStreets />
+    <div class="charts-box box" v-if="chartsVisible">
+      <Charts />
     </div>
 
-    <div class="detail-box box">
+    <div class="detail-box box" v-if="item">
       <Detail />
     </div>
   </div>
 </template>
 
 <script>
-import ChartRegion from "@/components/chart/Region";
-import ChartStreets from "@/components/chart/Streets";
+import Charts from "@/components/chart/Charts";
 import Detail from "@/components/common/Detail";
 
 export default {
   components: {
-    ChartRegion,
-    ChartStreets,
+    Charts,
     Detail,
   },
   computed: {
@@ -32,6 +27,16 @@ export default {
       return this.$store.state.region;
     },
   },
+  data() {
+    return {
+      chartsVisible: false,
+    };
+  },
+  mounted() {
+    this.$app.$on("open-charts", () => {
+      this.chartsVisible = !this.chartsVisible;
+    });
+  },
 };
 </script>
 
@@ -39,20 +44,16 @@ export default {
 .left-panel {
   position: relative;
   height: 100%;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
 
-  .region-box {
-    flex: 1;
+  .box {
+    width: 240px;
+    box-shadow: inset 0px 0px 6px 2px #09c;
+    padding: 12px;
   }
 
-  .streets-box {
-    flex: 1;
-  }
-
-  .chart {
+  .charts-box {
     height: 100%;
+    overflow: hidden;
   }
 }
 </style>

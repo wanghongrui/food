@@ -31,10 +31,10 @@ import bbox from "@turf/bbox";
 import center from "@turf/center";
 import L from "leaflet";
 import echarts from "echarts";
-import loader from 'load-script-promise';
+import loader from "load-script-promise";
 
 let map = null;
-let chartMarkers = []
+let chartMarkers = [];
 
 export default {
   components: {
@@ -47,7 +47,7 @@ export default {
     item() {
       return this.$store.state.item;
     },
-    items () {
+    items() {
       return this.$store.state.items;
     },
     region() {
@@ -64,43 +64,45 @@ export default {
 
     map.on("zoomend", () => {
       const level = map.getZoom();
-      this.mapChartVisible = level >= 10  && level < 15;
+      this.mapChartVisible = level >= 10 && level < 15;
 
       if (level < 15) {
-        this.itemsLayer.remove()
+        this.itemsLayer.remove();
       } else {
-        this.itemsLayer.addTo(map)
+        this.itemsLayer.addTo(map);
       }
     });
 
-    loader.loadScript('./data/data.js').then(() => {
-      this.$store.commit('region_changed', '全部')
-    })
+    loader.loadScript("./data/data.js").then(() => {
+      this.$store.commit("region_changed", "全部");
+    });
 
-    this.itemsLayer = L.geoJSON([])
+    this.itemsLayer = L.geoJSON([]);
   },
   watch: {
     item() {
       this.location();
     },
-    items () {
-      this.addItemsLayer()
+    items() {
+      this.addItemsLayer();
     },
     region() {
-      this.setItems()
-      this.setBorder()
+      this.setItems();
+      this.setBorder();
     },
     mapChartVisible(visible) {
       visible ? this.addMapChart() : this.removeMapChart();
     },
   },
   methods: {
-    setItems () {
-      let features = window.data.features
+    setItems() {
+      let features = window.data.features;
       if (this.region !== "全部") {
-        features = features.filter(feature => feature.properties.OBJECTID % 4 === 0)
+        features = features.filter(
+          (feature) => feature.properties.OBJECTID % 4 === 0
+        );
       }
-      this.$store.commit('items_changed', features)
+      this.$store.commit("items_changed", features);
     },
     setBorder() {
       this.border && this.border.remove();
@@ -162,7 +164,7 @@ export default {
       const marker = L.marker(coordinates.reverse(), {
         icon,
       }).addTo(map);
-      chartMarkers.push(marker)
+      chartMarkers.push(marker);
 
       const option = {
         color: ["#00868B", "#00FFFF"],
@@ -190,9 +192,9 @@ export default {
       const chart = echarts.init(el);
       chart.setOption(option);
     },
-    addItemsLayer () {
-      const level = map.getZoom()
-      this.itemsLayer.addData(this.items)
+    addItemsLayer() {
+      const level = map.getZoom();
+      this.itemsLayer.addData(this.items);
     },
     addMapChart() {
       if (this.region === "全部") {
@@ -207,8 +209,8 @@ export default {
       }
     },
     removeMapChart() {
-      chartMarkers.forEach(m => m.remove())
-      chartMarkers.length = 0
+      chartMarkers.forEach((m) => m.remove());
+      chartMarkers.length = 0;
     },
   },
 };
@@ -250,11 +252,9 @@ export default {
 
   .left-panel-container {
     position: relative;
-    width: 280px;
-    max-width: 30%;
+    width: fit-content;
     height: 100%;
     z-index: 1;
-    box-shadow: inset 0px 0px 6px 2px #09c;
   }
 
   .right-panel-container {

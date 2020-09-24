@@ -9,11 +9,13 @@
     <div class="detail-content">
       <div class="detail-item">
         <span class="detail-item-label">店名</span>
-        <span class="detail-item-value">{{item && item.properties.name || '知味观'}}</span>
+        <span class="detail-item-value">{{
+          (item && item.properties.name) || "知味观"
+        }}</span>
       </div>
       <div class="detail-item" v-for="(field, index) of fields" :key="index">
-        <span class="detail-item-label">{{field.label}}</span>
-        <span class="detail-item-value">{{field.value}}</span>
+        <span class="detail-item-label">{{ field.label }}</span>
+        <span class="detail-item-value">{{ field.value }}</span>
       </div>
     </div>
   </div>
@@ -66,7 +68,7 @@ export default {
 
   &-title {
     flex: 1;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   &-close {
@@ -75,7 +77,7 @@ export default {
 
   &-item {
     display: flex;
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin: 8px 0;
 
     &-label {

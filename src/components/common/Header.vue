@@ -9,8 +9,22 @@
     <span class="header-title-icon icon">
       <icon name="xiegang" scale="4" />
     </span>
+
+    <div class="header-controller">
+      <span @click="openCharts">统计</span>
+    </div>
   </header>
 </template>
+
+<script>
+export default {
+  methods: {
+    openCharts() {
+      this.$app.$emit("open-charts");
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .header {
@@ -38,6 +52,11 @@
 
   .horizontal-mirror {
     transform: rotateY(180deg);
+  }
+
+  &-controller {
+    position: absolute;
+    right: 10px;
   }
 }
 </style>
