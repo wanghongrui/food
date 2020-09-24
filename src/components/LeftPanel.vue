@@ -44,6 +44,8 @@ export default {
 .left-panel {
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .box {
     width: 240px;
@@ -52,7 +54,7 @@ export default {
   }
 
   .charts-box {
-    height: 100%;
+    flex: 1;
     overflow: hidden;
   }
 }

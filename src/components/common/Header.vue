@@ -11,7 +11,7 @@
     </span>
 
     <div class="header-controller">
-      <span @click="openCharts">统计</span>
+      <span class="header-controller-item" @click="openCharts">统计</span>
     </div>
   </header>
 </template>
@@ -57,6 +57,10 @@ export default {
   &-controller {
     position: absolute;
     right: 10px;
+
+    &-item {
+      cursor: pointer;
+    }
   }
 }
 </style>
