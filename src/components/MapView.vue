@@ -80,7 +80,7 @@ export default {
     this.itemsLayer = L.geoJSON([], {
       onEachFeature: (feature, layer) => {
         const prop = feature.properties;
-        const name = feature.name;
+        const name = prop.name;
 
         layer
           .bindTooltip(name, {
@@ -159,13 +159,10 @@ export default {
     },
     fitBounds(feature) {
       const [x0, y0, x1, y1] = bbox(feature);
-      map.fitBounds(
-        [
-          [y0, x0],
-          [y1, x1],
-        ],
-        { maxZoom: 17 }
-      );
+      map.fitBounds([
+        [y0, x0],
+        [y1, x1],
+      ]);
     },
     createMapChart(feature) {
       const {
