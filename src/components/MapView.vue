@@ -64,9 +64,9 @@ export default {
 
     map.on("zoomend", () => {
       const level = map.getZoom();
-      this.mapChartVisible = level >= 10 && level < 15;
+      this.mapChartVisible = level >= 10 && level < 14;
 
-      if (level < 15) {
+      if (level < 14) {
         this.itemsLayer.remove();
       } else {
         this.itemsLayer.addTo(map);
@@ -118,9 +118,7 @@ export default {
     setItems() {
       let features = window.data.features;
       if (this.region !== "全部") {
-        features = features.filter(
-          (feature) => feature.properties.OBJECTID % 4 === 0
-        );
+        // filter by region
       }
       this.$store.commit("items_changed", features);
     },
@@ -144,15 +142,6 @@ export default {
       }).addTo(map);
 
       this.fitBounds(target);
-    },
-    addData() {
-      fetch("./data/富力.geojson")
-        .then((resp) => resp.json())
-        .then((geojson) => {
-          L.geoJSON(geojson).addTo(map);
-
-          this.$store.commit("items_changed", geojson.features);
-        });
     },
     location() {
       this.fitBounds(this.item);
