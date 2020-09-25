@@ -35,6 +35,7 @@ export default {
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
+                maxZoom: 19
               },
             },
             {
@@ -46,6 +47,7 @@ export default {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
+                maxZoom: 19
               },
             },
           ],
@@ -61,6 +63,7 @@ export default {
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
+                maxZoom: 19
               },
             },
             {
@@ -72,6 +75,7 @@ export default {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
+                maxZoom: 19
               },
             },
           ],
