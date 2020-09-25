@@ -120,8 +120,8 @@ export default {
       this.border = L.geoJSON(masked, {
         style: {
           color: "rgb(26, 47, 101, 0.8)",
-          weight: 5,
-          stroke: 5,
+          weight: 1,
+          stroke: 1,
           fillOpacity: 1,
         },
       }).addTo(map);
