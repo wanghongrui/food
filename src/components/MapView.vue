@@ -77,7 +77,24 @@ export default {
       this.$store.commit("region_changed", "全部");
     });
 
-    this.itemsLayer = L.geoJSON([]);
+    this.itemsLayer = L.geoJSON([], {
+      onEachFeature: (feature, layer) => {
+        const prop = feature.properties;
+        const name = feature.name;
+
+        layer
+          .bindTooltip(name, {
+            offset: [10, 0],
+            direction: "right",
+            sticky: true,
+          })
+          .openTooltip();
+
+        layer.on("click", (e) => {
+          this.$store.commit("item_changed", feature);
+        });
+      },
+    });
   },
   watch: {
     item() {
@@ -215,17 +232,17 @@ export default {
       chartMarkers.forEach((m) => m.remove());
       chartMarkers.length = 0;
     },
-    twinkle () {
+    twinkle() {
       const b = bbox(this.item);
       const bounds = [
         [b[1], b[0]],
-        [b[3], b[2]]
+        [b[3], b[2]],
       ];
       map.fitBounds(bounds, {
-        maxZoom: 17
+        maxZoom: 17,
       });
 
-      this.itemsLayer.eachLayer(f => {
+      this.itemsLayer.eachLayer((f) => {
         if (f.feature === this.item) {
           const element = f.getElement();
           element.classList.add("animate");
@@ -235,7 +252,7 @@ export default {
           }, 5000);
         }
       });
-    }
+    },
   },
 };
 </script>
