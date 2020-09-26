@@ -1,10 +1,19 @@
 <template>
   <div class="map-tool container">
+    <div class="map-tool-item" @click="toggleLabelVisible">
+      <span class="map-tool-icon">
+        <icon :name="labelVisible ? 'checked' : 'check'" scale="1.5"></icon>
+      </span>
+      <span class="map-tool-text">标注</span>
+    </div>
+
     <div class="map-tool-item" @click="changeMapType">
       <span class="map-tool-icon">
         <icon name="map" scale="2"></icon>
       </span>
-      <span class="map-tool-text">{{activeMapType && activeMapType.label}}</span>
+      <span class="map-tool-text">{{
+        activeMapType && activeMapType.label
+      }}</span>
     </div>
 
     <div class="map-tool-item" @click="measure">
@@ -35,11 +44,11 @@ export default {
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
-                maxZoom: 19
+                maxZoom: 19,
               },
             },
             {
-              id: "img-anno",
+              id: "img-label",
               type: "xyz",
               url:
                 "http://srv{s}.zjditu.cn/ZJDOMANNO_2D/wmts?layer=TDT_ZJIMGANNO&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
@@ -47,7 +56,7 @@ export default {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
-                maxZoom: 19
+                maxZoom: 19,
               },
             },
           ],
@@ -63,11 +72,11 @@ export default {
               config: {
                 subdomains: "0123456",
                 zoomOffset: 1,
-                maxZoom: 19
+                maxZoom: 19,
               },
             },
             {
-              id: "emap-anno",
+              id: "emap-label",
               type: "xyz",
               url:
                 "http://srv{s}.zjditu.cn/ZJEMAPANNO_2D/wmts?layer=TDT_ZJEMAPANNO&style=default&tilematrixset=default028mm&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpgpng&TileMatrix={z}&TileCol={x}&TileRow={y}",
@@ -75,36 +84,52 @@ export default {
                 subdomains: "0123456",
                 zoomOffset: 1,
                 minZoom: 9,
-                maxZoom: 19
+                maxZoom: 19,
               },
             },
           ],
         },
       ],
       activeMapType: null,
+      labelVisible: true,
     };
   },
   watch: {
     activeMapType(n, o) {
       o &&
         o.values.forEach((l) => {
-          this.$app.$emit("remove-layer", l.id);
+          this.removeLayer(l);
         });
 
-      n.values.forEach((l) => {
-        this.$app.$emit("add-layer", l);
-      });
+      this.addLayer(n.values[0]);
+      if (this.labelVisible) {
+        this.addLayer(n.values[1]);
+      }
     },
+    labelVisible() {},
   },
   mounted() {
     this.activeMapType = this.mapTypes[0];
+    this.labelVisible = true;
   },
   methods: {
+    toggleLabelVisible() {
+      this.labelVisible = !this.labelVisible;
+
+      const opt = this.activeMapType.values[1];
+      this.labelVisible ? this.addLayer(opt) : this.removeLayer(opt);
+    },
     changeMapType() {
       this.activeMapType =
         this.activeMapType === this.mapTypes[0]
           ? this.mapTypes[1]
           : this.mapTypes[0];
+    },
+    addLayer(l) {
+      this.$app.$emit("add-layer", l);
+    },
+    removeLayer(l) {
+      this.$app.$emit("remove-layer", l.id);
     },
     measure() {
       const map = this.$map;
@@ -201,6 +226,7 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
+  user-select: none;
 
   &-item {
     display: flex;
