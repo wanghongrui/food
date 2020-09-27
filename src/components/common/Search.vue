@@ -4,6 +4,7 @@
       class="search-input"
       type="text"
       v-model="keyword"
+      @keydown="keydown"
       placeholder="搜索"
     />
     <span class="map-tool-icon">
@@ -12,6 +13,7 @@
 
     <div class="search-tip-container" v-if="showTip">
       <search-tip
+        ref="tip"
         :keyword="keyword"
         @changed="tipSelected"
         @tip-focused="tipFocused"
@@ -31,6 +33,7 @@ export default {
     return {
       keyword: null,
       showTip: false,
+      activeTipItem: null
     };
   },
   computed: {
@@ -47,20 +50,18 @@ export default {
     },
   },
   methods: {
-    // getItems() {
-    //   const key = this.keyword.trim();
-    //   const items = this.items.filter((item) => {
-    //     const props = item.properties;
-    //     return props.name?.includes(key) || props.road?.includes(key);
-    //   });
-    //   this.$store.commit("result_changed", items);
-    // },
+    keydown(e) {
+      if (e.keyCode === 38 || e.keyCode === 40) {
+        this.$refs.tip.tipFocusByKeyboard(e);
+      } else {
+        this.showTip = true;
+      }
+    },
     tipFocused(item) {
       this.activeTipItem = item;
     },
     tipSelected() {
-      this.$store.commit("itemss_changed", [this.activeTipItem]);
-      this.$store.commit("item_changed", this.activeTipItem);
+      this.$store.commit("items_changed", this.activeTipItem);
 
       this.activeTipItem = null;
     },

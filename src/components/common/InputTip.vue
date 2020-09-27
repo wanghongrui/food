@@ -4,16 +4,15 @@
       class="item"
       v-for="(t, i) of tips"
       :key="i"
-      :class="{active: tipActiveIndex === i}"
+      :class="{ active: tipActiveIndex === i }"
       @mouseenter="tipFocusByMouse(i)"
       @click="tipSelected(t)"
     >
       <span class="icon">
-        <icon name="location" scale="1.5"></icon>
+        <icon :name="t.type === 'road' ? 'road' : 'location'" scale="2"></icon>
       </span>
       <span class="text">
-        <span class="name">{{t}}</span>
-        <!-- <span class="sub" v-show="t.properties.road">{{t.properties.road}}</span> -->
+        <span class="name">{{ t.name }}</span>
       </span>
     </div>
   </div>
@@ -23,14 +22,14 @@
 export default {
   props: ["keyword"],
   computed: {
-    items () {
-      return this.$store.state.items
-    }
+    items() {
+      return this.$store.state.items;
+    },
   },
   data() {
     return {
       tips: [],
-      tipActiveIndex: -1
+      tipActiveIndex: -1,
     };
   },
   created() {
@@ -42,7 +41,7 @@ export default {
     },
     tipActiveIndex(i) {
       this.tipFocused(i);
-    }
+    },
   },
   methods: {
     fetch() {
@@ -53,28 +52,45 @@ export default {
 
       const key = this.keyword.trim();
 
-      const map = new Map()
-      this.items.forEach(item => {
-        const {name, road} = item.properties
+      const nameMap = new Map();
+      const roadMap = new Map();
+
+      this.items.forEach((item) => {
+        const { name, road } = item.properties;
         if (name?.includes(key)) {
-          if (!map.has(name)) {
-            map.set(name, [])
+          if (!nameMap.has(name)) {
+            nameMap.set(name, []);
           }
-          map.get(name).push(item)
+          nameMap.get(name).push(item);
         }
 
         if (road?.includes(key)) {
-          if (!map.has(road)) {
-            map.set(road, [])
+          if (!roadMap.has(road)) {
+            roadMap.set(road, []);
           }
-          map.get(road).push(item)
+          roadMap.get(road).push(item);
         }
-      })
+      });
 
+      this.tips = [];
+      nameMap.forEach((v, k) => {
+        this.tips.push({
+          name: k,
+          type: "name",
+          value: v,
+        });
+      });
 
-      this.tips = map.keys()
+      roadMap.forEach((v, k) => {
+        this.tips.push({
+          name: k,
+          type: "road",
+          value: v,
+        });
+      });
+
       this.tipActiveIndex = -1;
-      console.log(this.tips)
+      this.tips.length > 10 && (this.tips.length = 10);
     },
     tipFocusByKeyboard(e) {
       if (e.keyCode === 38) {
@@ -96,12 +112,12 @@ export default {
       if (i >= 0 && i < this.tips.length) {
         item = this.tips[this.tipActiveIndex];
       }
-      this.$emit("tip-focused", item);
+      this.$emit("tip-focused", item.value);
     },
-    tipSelected(item) {
-      this.$emit("changed", item);
-    }
-  }
+    tipSelected() {
+      this.$emit("changed");
+    },
+  },
 };
 </script>
 
@@ -143,7 +159,7 @@ export default {
     }
 
     &.active {
-      background-color: #eeeeee;
+      opacity: 0.8;
     }
   }
 }
