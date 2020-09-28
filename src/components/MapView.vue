@@ -10,7 +10,8 @@
       </div>
 
       <div class="base-map-container">
-        <base-map />
+        <!-- <base-map /> -->
+        <mapbox />
       </div>
 
       <div class="right-panel-container">
@@ -22,7 +23,7 @@
 
 <script>
 import VHeader from "@/components/common/Header";
-import BaseMap from "@/components/common/BaseMap";
+import Mapbox from "@/components/map/Mapbox"
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import border from "@/assets/region";
@@ -40,6 +41,7 @@ export default {
   components: {
     VHeader,
     BaseMap,
+    Mapbox,
     LeftPanel,
     RightPanel,
   },
@@ -60,40 +62,12 @@ export default {
     };
   },
   mounted() {
-    map = this.$map;
-
-    map.on("zoomend", () => {
-      const level = map.getZoom();
-      this.mapChartVisible = level >= 10 && level < 14;
-
-      if (level < 14) {
-        this.itemsLayer.remove();
-      } else {
-        this.itemsLayer.addTo(map);
-      }
-    });
+    this.$on('init', () => {
+      map = this.$map;
+    })
 
     loader.loadScript("./data/data.js").then(() => {
-      this.$store.commit("region_changed", "全部");
-    });
-
-    this.itemsLayer = L.geoJSON([], {
-      onEachFeature: (feature, layer) => {
-        const prop = feature.properties;
-        const name = prop.name;
-
-        layer
-          .bindTooltip(name, {
-            offset: [10, 0],
-            direction: "right",
-            sticky: true,
-          })
-          .openTooltip();
-
-        layer.on("click", (e) => {
-          this.$store.commit("item_changed", feature);
-        });
-      },
+      // this.$store.commit("region_changed", "全部");
     });
   },
   watch: {
