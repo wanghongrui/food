@@ -9,18 +9,20 @@ import Vue from "vue";
 
 export default {
   name: "mapbox",
-  props: ["styledata"],
   computed: {
-    config() {
-      return this.$store.state.common.config;
-    }
+    styledata() {
+      return this.$store.state.styledata;
+    },
   },
   data() {
     return {
-      mapId: Math.random()
-        .toString(36)
-        .substr(2)
+      mapId: Math.random().toString(36).substr(2),
     };
+  },
+  created() {
+    this.load().then(() => {
+      this.init();
+    });
   },
   watch: {
     styledata() {
@@ -28,14 +30,10 @@ export default {
         可能是这个js内部加入水印修改了this.styledata，
         而Vuex是禁止直接从外部修改的
       */
+      console.log("stylec");
       const styledata = JSON.parse(JSON.stringify(this.styledata));
       this.map.setStyle(styledata, { diff: false });
-    }
-  },
-  created() {
-    this.load().then(() => {
-      this.init();
-    });
+    },
   },
   methods: {
     load() {
@@ -60,10 +58,10 @@ export default {
       });
     },
     init() {
-      const key = '898f3541e6c196c9a634710017691f6d'
-      const center = [120.2, 30.2]
-      const zoom = 14
-      const tdtcode = 'xihu'
+      const key = "898f3541e6c196c9a634710017691f6d";
+      const center = [120.2, 30.2];
+      const zoom = 14;
+      const tdtcode = "xihu";
 
       this.map = new mapboxgl.Map({
         container: this.mapId,
@@ -81,17 +79,17 @@ export default {
 
             if (url.includes("{key}")) {
               return {
-                url: url.replace("{key}", key)
+                url: url.replace("{key}", key),
               };
             }
 
             if (url.includes("{tdtcode}")) {
               return {
-                url: url.replace("{tdtcode}", tdtcode)
+                url: url.replace("{tdtcode}", tdtcode),
               };
             }
           }
-        }
+        },
       });
 
       this.map.addControl(
@@ -100,9 +98,9 @@ export default {
       );
       Vue.prototype.$map = this.map;
 
-      this.$emit("init");
+      this.$app.$emit("init");
     },
-  }
+  },
 };
 </script>
 

@@ -10,8 +10,7 @@
       </div>
 
       <div class="base-map-container">
-        <!-- <base-map /> -->
-        <mapbox />
+        <base-map />
       </div>
 
       <div class="right-panel-container">
@@ -23,7 +22,7 @@
 
 <script>
 import VHeader from "@/components/common/Header";
-import Mapbox from "@/components/map/Mapbox"
+import BaseMap from "@/components/map/BaseMap"
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import border from "@/assets/region";
@@ -41,7 +40,6 @@ export default {
   components: {
     VHeader,
     BaseMap,
-    Mapbox,
     LeftPanel,
     RightPanel,
   },

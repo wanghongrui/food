@@ -5,15 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mapLoaded: false,
     items: [],
     result: [],
     item: null,
-    region: ""
+    region: "",
+    styledata: null
   },
   mutations: {
-    map_loaded(state) {
-      state.mapLoaded = true
+    styledata_changed (state, styledata) {
+      state.styledata = styledata
     },
     items_changed(state, items = []) {
       state.items = items
