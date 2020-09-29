@@ -2,11 +2,12 @@
   <div class="regions">
     <span
       class="region"
-      :class="{active: item === region}"
+      :class="{ active: item === region }"
       @click="select(item)"
       v-for="(item, index) of items"
       :key="index"
-    >{{item}}</span>
+      >{{ item }}</span
+    >
   </div>
 </template>
 
@@ -21,6 +22,11 @@ export default {
     region() {
       return this.$store.state.region;
     },
+  },
+  mounted() {
+    this.$app.$on("data-init", () => {
+      this.select(this.items[0]);
+    });
   },
   methods: {
     select(item) {

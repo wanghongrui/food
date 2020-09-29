@@ -15,6 +15,10 @@ export default {
   },
   created() {
     Vue.prototype.$app = new Vue();
+
+    window.onresize = () => {
+      this.$store.commit("resize_changed");
+    };
   },
 };
 </script>

@@ -98,7 +98,7 @@ export default {
       );
       Vue.prototype.$map = this.map;
 
-      this.$app.$emit("init");
+      this.$app.$emit("map-init");
     },
   },
 };

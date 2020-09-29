@@ -9,7 +9,8 @@ export default new Vuex.Store({
     result: [],
     item: null,
     region: "",
-    styledata: null
+    styledata: null,
+    resize: 0
   },
   mutations: {
     styledata_changed (state, styledata) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     },
     region_changed (state, region = "全部") {
       state.region = region
+    },
+    resize_changed (state) {
+      state.resize++
     }
   }
 })

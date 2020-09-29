@@ -48,7 +48,7 @@ export default {
     };
   },
   mounted() {
-    this.$app.$on("init", () => {
+    this.$app.$on("map-init", () => {
       map = this.$map;
 
       this.activeStyle = this.items[0]

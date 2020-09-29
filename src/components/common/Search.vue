@@ -36,17 +36,9 @@ export default {
       activeTipItem: null
     };
   },
-  computed: {
-    items() {
-      return this.$store.state.items;
-    },
-  },
   watch: {
     keyword() {
       this.showTip = !!this.keyword;
-    },
-    items() {
-      this.$store.commit("result_changed", this.items);
     },
   },
   methods: {

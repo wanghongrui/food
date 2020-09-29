@@ -22,7 +22,7 @@
 
 <script>
 import VHeader from "@/components/common/Header";
-import BaseMap from "@/components/map/BaseMap"
+import BaseMap from "@/components/map/BaseMap";
 import LeftPanel from "@/components/LeftPanel";
 import RightPanel from "@/components/RightPanel";
 import border from "@/assets/region";
@@ -53,6 +53,9 @@ export default {
     region() {
       return this.$store.state.region;
     },
+    resize() {
+      return this.$store.state.resize;
+    },
   },
   data() {
     return {
@@ -60,12 +63,12 @@ export default {
     };
   },
   mounted() {
-    this.$on('init', () => {
+    this.$app.$on("map-init", () => {
       map = this.$map;
-    })
 
-    loader.loadScript("./data/data.js").then(() => {
-      // this.$store.commit("region_changed", "全部");
+      loader.loadScript("./data/data.js").then(() => {
+        this.$app.$emit('data-init')
+      });
     });
   },
   watch: {
@@ -76,7 +79,7 @@ export default {
       this.location();
     },
     items() {
-      this.addItemsLayer();
+      this.setItems();
     },
     region() {
       this.setItems();
@@ -85,6 +88,9 @@ export default {
     mapChartVisible(visible) {
       visible ? this.addMapChart() : this.removeMapChart();
     },
+    resize() {
+      map.resize();
+    },
   },
   methods: {
     setItems() {
@@ -92,11 +98,44 @@ export default {
       if (this.region !== "全部") {
         // filter by region
       }
+
+      const data = {
+        type: "FeatureCollection",
+        features,
+      };
+
+      if (!this.dataSource) {
+        map.addSource("data", {
+          type: "geojson",
+          data: window.data,
+        });
+        map.addLayer({
+          id: "data",
+          type: "fill",
+          source: "data",
+          layout: {},
+          paint: {
+            "fill-color": "#088",
+            "fill-opacity": 0.5,
+          },
+        });
+
+        map.on("click", "data", (e) => {
+          const id = e.features[0].properties.OBJECTID;
+          window.data.features.forEach((f) => {
+            if (f.properties.OBJECTID === id) {
+              this.$store.commit("item_changed", f);
+            }
+          });
+        });
+
+        this.dataSource = map.getSource("data");
+      } else {
+        this.dataSource.setData(data);
+      }
       this.$store.commit("items_changed", features);
     },
     setBorder() {
-      this.border && this.border.remove();
-
       let target = border;
 
       if (this.region !== "全部") {
@@ -104,14 +143,26 @@ export default {
       }
       const masked = mask(target);
 
-      this.border = L.geoJSON(masked, {
-        style: {
-          color: "rgb(26, 47, 101, 0.8)",
-          weight: 1,
-          stroke: 1,
-          fillOpacity: 1,
-        },
-      }).addTo(map);
+      if (!this.borderSource) {
+        map.addSource("border", {
+          type: "geojson",
+          data: masked,
+        });
+        map.addLayer({
+          id: "border",
+          type: "fill",
+          source: "border",
+          layout: {},
+          paint: {
+            "fill-color": "rgb(26, 47, 101)",
+            "fill-opacity": 0.5,
+          },
+        });
+
+        this.borderSource = map.getSource("border");
+      } else {
+        this.borderSource.setData(masked);
+      }
 
       this.fitBounds(target);
     },
@@ -119,11 +170,8 @@ export default {
       this.fitBounds(this.item);
     },
     fitBounds(feature) {
-      const [x0, y0, x1, y1] = bbox(feature);
-      map.fitBounds([
-        [y0, x0],
-        [y1, x1],
-      ]);
+      const bounds = bbox(feature);
+      map.fitBounds(bounds);
     },
     createMapChart(feature) {
       const {
@@ -170,10 +218,6 @@ export default {
       const chart = echarts.init(el);
       chart.setOption(option);
     },
-    addItemsLayer() {
-      const level = map.getZoom();
-      this.itemsLayer.addData(this.items);
-    },
     addMapChart() {
       if (this.region === "全部") {
         border.features.forEach((feature) => {
@@ -191,15 +235,10 @@ export default {
       chartMarkers.length = 0;
     },
     twinkle() {
-      const b = bbox(this.item);
-      const bounds = [
-        [b[1], b[0]],
-        [b[3], b[2]],
-      ];
-      map.fitBounds(bounds, {
-        maxZoom: 17,
-      });
+      const bounds = bbox(this.item);
+      map.fitBounds(bounds);
 
+      /*
       this.itemsLayer.eachLayer((f) => {
         if (f.feature === this.item) {
           const element = f.getElement();
@@ -210,6 +249,7 @@ export default {
           }, 5000);
         }
       });
+      */
     },
   },
 };

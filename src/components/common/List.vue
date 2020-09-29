@@ -6,7 +6,7 @@
           class="list-item"
           :class="{ active: item === itemSelected }"
           @click="select(item)"
-          v-for="item of result"
+          v-for="item of items"
           :key="item.id"
         >
           <div class="list-item-icon">
@@ -16,15 +16,15 @@
         </div>
       </vue-scroll>
     </div>
-    <div class="list-footer">共计 {{ result.length }} 条</div>
+    <div class="list-footer">共计 {{ items.length }} 条</div>
   </div>
 </template>
 
 <script>
 export default {
   computed: {
-    result() {
-      return this.$store.state.result.slice(0, 40);
+    items() {
+      return this.$store.state.items.slice(0, 40);
     },
     itemSelected() {
       return this.$store.state.item;

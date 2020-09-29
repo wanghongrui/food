@@ -37,6 +37,19 @@ export default {
       this.chartsVisible = !this.chartsVisible;
     });
   },
+  watch: {
+    item() {
+      this.resize();
+    },
+    region() {
+      this.resize();
+    },
+  },
+  methods: {
+    resize() {
+      this.$store.commit("resize_changed");
+    },
+  },
 };
 </script>
 
