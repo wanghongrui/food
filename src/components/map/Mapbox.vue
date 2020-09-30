@@ -44,13 +44,13 @@ export default {
         }
 
         const script = document.createElement("script");
-        script.setAttribute("src", "/lib/mapbox-gl.js");
+        script.setAttribute("src", "./lib/mapbox-gl.js");
         document.body.appendChild(script);
 
         const link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
-        link.setAttribute("href", "/lib/mapbox-gl.css");
+        link.setAttribute("href", "./lib/mapbox-gl.css");
 
         document.head.appendChild(link);
 
