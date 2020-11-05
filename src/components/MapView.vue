@@ -56,6 +56,9 @@ export default {
     resize() {
       return this.$store.state.resize;
     },
+    styledata() {
+      return this.$store.state.styledata;
+    },
   },
   data() {
     return {
@@ -67,7 +70,7 @@ export default {
       map = this.$map;
 
       loader.loadScript("./data/data.js").then(() => {
-        this.$app.$emit('data-init')
+        this.$app.$emit("data-init");
       });
     });
   },
@@ -91,20 +94,29 @@ export default {
     resize() {
       map.resize();
     },
+    styledata() {
+      setTimeout(() => {
+        this.setLayer();
+      }, 100);
+    },
   },
   methods: {
-    setItems() {
-      let features = window.data.features;
-      if (this.region !== "全部") {
-        // filter by region
+    setLayer() {
+      if (!window.data) {
+        return;
       }
 
+      const features = window.data.features;
       const data = {
         type: "FeatureCollection",
         features,
       };
 
-      if (!this.dataSource) {
+      const dataSource = map.getSource("data");
+
+      if (dataSource) {
+        dataSource.setData(data);
+      } else {
         map.addSource("data", {
           type: "geojson",
           data: window.data,
@@ -128,11 +140,16 @@ export default {
             }
           });
         });
-
-        this.dataSource = map.getSource("data");
-      } else {
-        this.dataSource.setData(data);
       }
+    },
+    setItems() {
+      const features = window.data.features;
+      if (this.region !== "全部") {
+        // filter by region
+      }
+
+      this.setLayer();
+
       this.$store.commit("items_changed", features);
     },
     setBorder() {
