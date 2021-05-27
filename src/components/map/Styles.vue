@@ -24,20 +24,20 @@ export default {
         {
           label: "地图",
           key: "emap",
-          url: "./styles/streets.json",
+          url: "https://zhejiang.tianditu.gov.cn/vtiles/styles/tdt/streets_zw.json",
           minzoom: 6,
           maxzoom: 19,
         },
         {
           label: "黑夜",
-          url: "/styles/dark.json",
+          url: "https://zhejiang.tianditu.gov.cn/vtiles/styles/tdt/dark.json",
           minzoom: 6,
           maxzoom: 19,
         },
         {
           key: "img",
           label: "影像",
-          url: "/styles/img.json",
+          url: "https://zhejiang.tianditu.gov.cn/vtiles/styles/tdt/img.json",
           minzoom: 6,
           maxzoom: 18,
         },
